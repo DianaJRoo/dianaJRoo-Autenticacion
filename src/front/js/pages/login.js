@@ -1,13 +1,21 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import {Context} from "../store/appContext"
+import {useNavigate} from "react-router-dom"
+
 
 
 export const Login = () => {
 
+    const [user, setUser] = useState({})
+    const navigate = useNavigate
+    const { store, actions } = useContext(Context)
 
-    const [user, setUser] = useState()
+    const sendCredentials = async () => {
+      const isLoged = await actions.login(user);
+
+    }
+
     return <>
-
-       
         <div className="container">
         <h1>Login Form</h1>
         <form>
@@ -15,7 +23,7 @@ export const Login = () => {
                 <label className="form-label">Email address</label>
                 <input 
                 type="email" className="form-control"
-                
+                value={user?.email || ""}
                 onChange={(evt) => setUser({... user, email: evt.target.value})}
                 
                 />
@@ -25,12 +33,12 @@ export const Login = () => {
                 <label className="form-label">Password</label>
                 <input 
                 type="password" className="form-control"
-                
+                value={user?.password || ""}
                 onChange={(evt) => setUser({... user, password: evt.target.value})}
                 />
             </div>
            
-            <button onClick={()=> console.log(user)} className="btn btn-primary">Submit</button>
+            <button onClick={()=> sendCredentials()} className="btn btn-primary">Submit</button>
         </form>
      </div>
     </>

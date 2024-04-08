@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			token: null,
 			message: null,
 			demo: [
 				{
@@ -46,7 +47,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+
+			login: async(user) => {
+                const resp = await fetch(process.env.BACKEND_URL + "/api/login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "aplication/json",
+					},
+					body: JSON.stringify(user)
+				})
+				const data = await resp.json()
+				 if(resp.ok){
+					setStore({ token: data.access_token})
+					return true
+				 }
+				 else {
+					return false
+				}
 			}
+
 		}
 	};
 };
