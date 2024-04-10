@@ -7,18 +7,20 @@ import {useNavigate} from "react-router-dom"
 export const Login = () => {
 
     const [user, setUser] = useState({})
-    const navigate = useNavigate
+    const navigate = useNavigate()
     const { store, actions } = useContext(Context)
 
     const sendCredentials = async () => {
       const isLoged = await actions.login(user);
-
+         if(isLoged){
+            navigate("/private")
+         }
     }
 
     return <>
         <div className="container">
         <h1>Login Form</h1>
-        <form>
+        <div>
             <div className="mb-3">
                 <label className="form-label">Email address</label>
                 <input 
@@ -39,7 +41,7 @@ export const Login = () => {
             </div>
            
             <button onClick={()=> sendCredentials()} className="btn btn-primary">Submit</button>
-        </form>
+        </div>
      </div>
     </>
 

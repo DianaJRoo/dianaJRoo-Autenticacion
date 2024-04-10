@@ -53,7 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const resp = await fetch(process.env.BACKEND_URL + "/api/login", {
 					method: "POST",
 					headers: {
-						"Content-Type": "aplication/json",
+						"Content-Type": "application/json",
 					},
 					body: JSON.stringify(user)
 				})
