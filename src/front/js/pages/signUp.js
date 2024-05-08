@@ -142,11 +142,10 @@ export const SignUp = () => {
                 type="submit"
                 title="Ingresar"
                 name="Ingresar">
-                {store.currentIdiom !== "Español" ? (
-                  <>Register</>
-                ) : (
-                  <>Registrar</>
-                )}
+               
+               
+                  Registrar
+                
               </button>
 
             </div>
