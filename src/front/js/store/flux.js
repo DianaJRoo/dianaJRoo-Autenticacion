@@ -49,21 +49,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 
-			login: async(user) => {
-                const resp = await fetch(process.env.BACKEND_URL + "/api/login", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(user)
-				})
-				const data = await resp.json()
-				 if(resp.ok){
-					setStore({ token: data.access_token})
-					return true
-				 }
-				 else {
-					return false
+			login: async (userInfo) => {
+				try {
+					const res = await fetch(process.env.BACKEND_URL + "/api/login", {
+						method: "POST",
+						body: JSON.stringify(userInfo),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await res.json();
+					if (!res.ok) throw new Error("Invalid credentials");
+
+					// Guardar el token en sessionStorage
+					sessionStorage.setItem("userData", JSON.stringify(data));
+
+					setStore({ userToken: data });
+					return true;
+				} catch (error) {
+					console.error("Error logging in:", error);
+					return false;
 				}
 			},
 			createNewUser: async (userInfo) => {
@@ -99,7 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log('out')
 				sessionStorage.clear()
 				setStore({ userToken: "" })
-				window.location.href = '/'
+				window.location.href = '/hero'
 			},
 
 

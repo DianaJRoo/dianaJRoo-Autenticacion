@@ -28,22 +28,28 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-@api.route("/login", methods=["POST"])
+@api.route('/login', methods=['POST'])
 def login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
 
-    if email == None or password == None:
-        return jsonify({"msg": "Bad email or password"}), 401
+    if not email or not password:
+        return jsonify({'msg': 'email and password required'}), 400
     
-    user = User.query.filter_by(email=email).one_or_none() 
-
+    user = User.query.filter_by(email = email).one_or_none()
+    
     if user != None:
-        if password == user.password:
-         access_token = create_access_token(identity=email)
-         return jsonify(access_token=access_token)
-        
-    return jsonify({"msg": "User not found"}), 404  
+        check = bcrypt.checkpw(bytes(password, 'utf-8'), bytes(user.password, 'utf-8'))
+        if check:
+            access_token = create_access_token(identity=email)
+
+            
+            return jsonify({'token': access_token, 'identity': user.serialize()}), 200
+        else:
+            return jsonify({'msg': 'wrong password'}) , 404
+    else:
+        return jsonify({'msg': 'user not found'}), 404
+
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()

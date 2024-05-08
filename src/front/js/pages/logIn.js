@@ -25,7 +25,7 @@ export const LogIn = () => {
     return (
         <>
            
-            <div className="flex flex-col justify-center mt-3 items-center">
+            <div id='login-body' className="flex flex-col justify-center mt-0 items-center" style={{backgroundImage: 'url("https://wallpapercave.com/wp/wp13615545.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '100vh'}} >
 
                 <div id="login" className="border-4 rounded border-gray-200 drop-shadow-md p-5 ">
 
@@ -62,7 +62,7 @@ export const LogIn = () => {
                             name="Ingresar"
                             onClick={(e) => handleLogin(e)}
                         >
-                            Login
+                            Entrar
                         </button><br />
                         {error && <small>invalid email or password</small>}
 
@@ -78,14 +78,14 @@ export const LogIn = () => {
                     </form>
                     <div className="pie-form flex justify-center ">
                         {/* <Link className="mt-4 text-pink-900" to="">Perdiste tu contraseña</Link><br /> */}
-                        <Link className="mt-2 text-pink-900" to="/signup">¿No tienes Cuenta? Registrate</Link>
+                        <Link className="mt-2 text-pink-900" to="/signup"> <strong>¿No tienes Cuenta? Registrate</strong></Link>
                     </div>
 
                 </div>
 
 
                 <div className="flex justify-between items-center">
-                    <Link to="/">Volver</Link>
+                    <Link to="/hero"><strong>Volver</strong></Link>
 
                 </div>
 
