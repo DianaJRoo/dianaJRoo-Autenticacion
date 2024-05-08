@@ -65,10 +65,58 @@ const getState = ({ getStore, getActions, setStore }) => {
 				 else {
 					return false
 				}
-			}
+			},
+			createNewUser: async (userInfo) => {
+				try {
+					const res = await fetch(process.env.BACKEND_URL + '/api/register', {
+						method: "POST",
+						body: JSON.stringify(userInfo),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (res.status === 409) {
+						console.error("El usuario ya existe");
+						//return false; 
+					}
+					const data = await res.json();
+					if (!res.ok){
+						throw new Error(data.msg)
+					}  
+					return true; 
+				} catch (error) {
+					console.log(error.message)
+					if (error.message == "Username already exists" || error.message == "Email already exists"){
+						throw new Error(error.message); 
+					}
+					console.log(error.message)
+					console.error("Error al crear un nuevo usuario:", error);
+					return false; 
+				}
+			},
+
+			logOut: () => {
+				console.log('out')
+				sessionStorage.clear()
+				setStore({ userToken: "" })
+				window.location.href = '/'
+			},
+
+
+
 
 		}
 	};
+
+
+
+
+
+
 };
+
+
+
+
 
 export default getState;
